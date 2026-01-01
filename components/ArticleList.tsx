@@ -112,7 +112,7 @@ export default function ArticleList() {
                   {article.title}
                 </h3>
                 <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#666', fontWeight: 'normal' }}>
-                  {article.summary?.replace(/<[^>]*>/g, '').substring(0, 150)}...
+                  {typeof article.summary === 'string' ? article.summary.replace(/<[^>]*>/g, '').substring(0, 150) + '...' : 'No preview available'}
                 </p>
                 <div style={{ fontSize: '12px', color: '#999', fontWeight: 'normal' }}>
                   <span>{getFeedTitle(article)}</span>
