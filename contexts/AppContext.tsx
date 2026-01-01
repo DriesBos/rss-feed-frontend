@@ -22,6 +22,7 @@ interface Feed {
   url: string;
   htmlUrl: string;
   iconUrl?: string;
+  unreadCount?: number;
 }
 
 interface AppContextType {
