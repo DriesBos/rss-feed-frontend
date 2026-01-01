@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RSS Reader Frontend
+
+Custom Next.js frontend for FreshRSS.
 
 ## Getting Started
 
-First, run the development server:
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Create `.env.local`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+NEXT_PUBLIC_FRESHRSS_URL=http://localhost:8080
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+For production (Netlify), set:
 
-## Deploy on Vercel
+```bash
+NEXT_PUBLIC_FRESHRSS_URL=https://your-freshrss-backend.com
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+frontend/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Home page
+├── components/             # React components
+│   ├── Navigation.tsx      # Top navigation
+│   ├── FeedList.tsx        # Sidebar feed list
+│   ├── ArticleList.tsx     # Middle article list
+│   └── ArticleView.tsx     # Right article view
+├── lib/                    # Utilities
+│   └── freshrss-api.ts     # FreshRSS API client
+├── styles/                 # SASS styles
+│   ├── _variables.scss     # Variables
+│   └── globals.scss        # Global styles
+└── package.json
+```
+
+## Styling
+
+All components use BEM naming for classes. Style them in your SASS files:
+
+Example:
+```scss
+.feed-list {
+  // Feed list styles
+
+  &__header {
+    // Header styles
+  }
+
+  &__item {
+    // Item styles
+
+    &--active {
+      // Active state
+    }
+  }
+}
+```
+
+## FreshRSS API
+
+The API client is in `lib/freshrss-api.ts`. Usage:
+
+```typescript
+import { freshRSSAPI } from '@/lib/freshrss-api';
+
+// Login
+const authToken = await freshRSSAPI.login('admin', 'password');
+
+// Get feeds
+const feeds = await freshRSSAPI.getFeeds();
+
+// Get articles
+const articles = await freshRSSAPI.getArticles();
+
+// Mark as read
+await freshRSSAPI.markAsRead(articleId);
+```
+
+## Deployment to Netlify
+
+### Via GitHub
+
+1. Push this frontend folder to GitHub
+2. Connect to Netlify
+3. Set build settings:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+4. Add environment variable:
+   - `NEXT_PUBLIC_FRESHRSS_URL`: Your FreshRSS backend URL
+5. Deploy!
+
+### Via Netlify CLI
+
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Login
+netlify login
+
+# Deploy
+netlify deploy --prod
+```
+
+## Development Workflow
+
+1. **Backend**: FreshRSS runs at `localhost:8080`
+2. **Frontend**: Next.js runs at `localhost:3000`
+3. **SASS**: Auto-compiles on save
+4. **API**: Frontend calls FreshRSS API
+
+## Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm run lint         # Run ESLint
+```
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: SASS/SCSS
+- **API Client**: Native Fetch + Axios
+- **Deployment**: Netlify
+
+## Next Steps
+
+1. Style the components in `styles/`
+2. Implement state management
+3. Add authentication flow
+4. Connect to FreshRSS API
+5. Deploy to Netlify
+
+Happy coding! 🚀
