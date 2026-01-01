@@ -1,27 +1,28 @@
-import Link from 'next/link';
+'use client';
+
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Navigation() {
+  const { username, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
   return (
-    <header className="navigation">
-      <div className="navigation__container">
-        <Link href="/" className="navigation__logo">
-          RSS Reader
-        </Link>
+    <header style={{ padding: '15px', borderBottom: '2px solid #ccc', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
+        <h1 style={{ margin: 0 }}>RSS Reader</h1>
 
-        <nav className="navigation__menu">
-          <Link href="/feeds" className="navigation__link">
-            Feeds
-          </Link>
-          <Link href="/favorites" className="navigation__link">
-            Favorites
-          </Link>
-          <Link href="/settings" className="navigation__link">
-            Settings
-          </Link>
-        </nav>
-
-        <div className="navigation__user">
-          <button className="navigation__button">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <span>Welcome, {username}</span>
+          <button 
+            onClick={handleLogout}
+            style={{ padding: '8px 16px', cursor: 'pointer' }}
+          >
             Logout
           </button>
         </div>

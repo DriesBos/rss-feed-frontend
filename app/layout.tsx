@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.scss";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AppProvider } from "@/contexts/AppContext";
 
 export const metadata: Metadata = {
   title: "RSS Reader",
@@ -13,7 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <AppProvider>
+            {children}
+          </AppProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
